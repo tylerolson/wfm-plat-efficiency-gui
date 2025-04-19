@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+
+	wfmplatefficiency "github.com/tylerolson/wfm-plat-efficiency"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -19,9 +22,28 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+
+	scraper := wfmplatefficiency.NewScraper()
+	err := scraper.LoadVendors()
+	if err != nil {
+		runtime.LogError(a.ctx, fmt.Sprintf("error: %v", err))
+	}
+
+	a.ctx = context.WithValue(a.ctx, "scraper", scraper)
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+func (a *App) GetVendorNames() []string {
+	names := make([]string, 0)
+
+	// TODO: turn this into a helper function
+	scraper, ok := a.ctx.Value("scraper").(*wfmplatefficiency.Scraper)
+	if !ok {
+		return names
+	}
+
+	for _, v := range scraper.GetVendors() {
+		names = append(names, v.Name)
+	}
+
+	return names
 }
