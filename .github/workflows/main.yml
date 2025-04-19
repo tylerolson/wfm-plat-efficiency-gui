@@ -1,6 +1,5 @@
 name: Wails build
 
-
 permissions:
   contents: write
   packages: write
@@ -21,13 +20,13 @@ jobs:
       fail-fast: false
       matrix:
         build:
-          - name: 'wfm-plat-efficiency-gui'
+          - name: 'wfm-plat-efficiency-gui_linux64'
             platform:  'linux/amd64'
             os: 'ubuntu-latest'
-          - name: 'wfm-plat-efficiency-gui'
+          - name: 'wfm-plat-efficiency-gui_win64'
             platform:  'windows/amd64'
             os: 'windows-latest'
-          - name: 'wfm-plat-efficiency-gui'
+          - name: 'wfm-plat-efficiency-gui_mac'
             platform:  'darwin/universal'
             os: 'macos-latest'
 
