@@ -5,7 +5,7 @@ go 1.24.1
 toolchain go1.24.2
 
 require (
-	github.com/tylerolson/wfm-plat-efficiency v0.0.0-20250419063259-95a498b94139
+	github.com/tylerolson/wfm-plat-efficiency v0.1.0
 	github.com/wailsapp/wails/v2 v2.10.1
 )
 
