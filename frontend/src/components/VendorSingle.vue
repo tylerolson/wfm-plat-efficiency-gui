@@ -1,66 +1,66 @@
 <script setup lang="ts">
-import { FetchVendor, GetVendor } from "../../wailsjs/go/main/App"
+import { FetchVendor, GetVendor } from "../../wailsjs/go/main/App";
 
-import { onMounted, ref, computed } from "vue"
-import { wfmplatefficiency } from "../../wailsjs/go/models"
+import { onMounted, ref, computed } from "vue";
+import { wfmplatefficiency } from "../../wailsjs/go/models";
 // import { LogPrint } from "../../wailsjs/runtime/"
 
 const props = defineProps<{
-  name: string
-}>()
+  name: string;
+}>();
 
-const fetchButton = ref("Fetch")
+const fetchButton = ref("Fetch");
 
-const sortKey = ref("name")
-const sortAsc = ref(true)
+const sortKey = ref("name");
+const sortAsc = ref(true);
 
-const items = ref<wfmplatefficiency.Item[]>([])
+const items = ref<wfmplatefficiency.Item[]>([]);
 
 const sortedItems = computed(() => {
   if (!sortKey.value) {
-    return [...items.value]
+    return [...items.value];
   }
 
   const sortedArray = [...items.value].sort((a, b) => {
-    const valueA = a[sortKey.value as keyof wfmplatefficiency.Item]
-    const valueB = b[sortKey.value as keyof wfmplatefficiency.Item]
+    const valueA = a[sortKey.value as keyof wfmplatefficiency.Item];
+    const valueB = b[sortKey.value as keyof wfmplatefficiency.Item];
 
     if (valueA < valueB) {
-      return sortAsc.value ? -1 : 1
+      return sortAsc.value ? -1 : 1;
     }
     if (valueA > valueB) {
-      return sortAsc.value ? 1 : -1
+      return sortAsc.value ? 1 : -1;
     }
-    return 0
-  })
-  return sortedArray
-})
+    return 0;
+  });
+  return sortedArray;
+});
 
 function sort(key: keyof wfmplatefficiency.Item) {
   if (sortKey.value === key) {
-    sortAsc.value = !sortAsc.value
+    sortAsc.value = !sortAsc.value;
   } else {
-    sortKey.value = key
-    sortAsc.value = true
+    sortKey.value = key;
+    sortAsc.value = true;
   }
 }
 
 function getItems() {
   GetVendor(props.name).then((result: wfmplatefficiency.Vendor) => {
-    items.value = result.items
-  })
+    items.value = result.items;
+  });
 }
 
 async function fetch() {
-  fetchButton.value = "Fetching..."
-  await FetchVendor(props.name)
-  getItems()
-  fetchButton.value = "Fetched"
+  fetchButton.value = "Fetching...";
+  await FetchVendor(props.name);
+  getItems();
+  fetchButton.value = "Fetched";
 }
 
 onMounted(() => {
-  getItems()
-})
+  getItems();
+});
 </script>
 
 <template>
